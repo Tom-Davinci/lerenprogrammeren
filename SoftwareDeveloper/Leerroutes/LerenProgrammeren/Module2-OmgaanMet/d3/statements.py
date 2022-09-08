@@ -3,11 +3,15 @@ b = int( input("Wat is b?") )
 
 if a > b:
     max = a
-    print("a is grootste getal!", max)
+    min = b
+    print("het minimum is:", b)
+    print("het maximum is:", a)
 
 elif a < b:
     min = a
-    print("a is het kleinste getal", min)
+    max = b
+    print("het minimum is:", min)
+    print("het maximum is:", max)
 
 else:
     print("a en b zijn even groot!")
