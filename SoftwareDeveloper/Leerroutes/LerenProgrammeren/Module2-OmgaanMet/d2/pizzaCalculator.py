@@ -1,9 +1,21 @@
 #Tom de Boer, pizza calculator
 
 # input, integer gemaakt want een halve pizza is niet mogelijk in dit restaurant
-small = int( input("Hoeveel small pizza's wilt u?") )
-med = int( input("Hoeveel medium pizza's wilt u?") )
-large = int( input("Hoeveel large pizza's wilt u?") )
+try:
+    small = int( input("Hoeveel small pizza's wilt u?") )
+except:
+    print("Heel getal invoeren")
+    quit()
+try:
+    med = int( input("Hoeveel medium pizza's wilt u?") )
+except:
+    print("Heel getal invoeren")
+    quit()
+try:
+    large = int( input("Hoeveel large pizza's wilt u?") )
+except:
+    print("Heel getal invoeren")
+    quit()
 
 # prijzen van een willekeurig plekje in Albequerque
 # round toegevoegd om het te houden in euro
