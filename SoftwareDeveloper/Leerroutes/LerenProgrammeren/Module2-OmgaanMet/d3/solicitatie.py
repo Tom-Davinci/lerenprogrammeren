@@ -3,7 +3,10 @@ if ervaring <= 4:
     ervaring2 = int( input("Hoeveel jaar heeft u ervaring met jongeleren?") )
     if ervaring2 <= 5:
         ervaring3 = int( input("Hoeveel jaar ervaring heeft u met de acrobatiek?") )
-
+name = input("Wat is uw naam?")
+name = name.lower()
+if name == "arda":
+    raise NameError("Arda is echt een kut naam!")
 diploma = input("Heeft u een MBO-4 diploma ondernemen? (Y/N)")
 bewijs = input("Heeft u een vrachtwagen rjibewijs? (Y/N)")
 hoed = input("Heeft u een hoge hoed? (Y/N)")
@@ -17,10 +20,14 @@ else:
     haar2 = int( input("Hoe lang is uw haar?(CM)") )
 
 lengte = int( input("Hoe lang bent u? (CM)") )
+if lengte <= 100:
+    raise NameError("Pauper dwerg")
 gewicht = int (input("Hoe zwaar bent u? (KG)") )
 certificaat = input("Heeft u het certificaat, 'overleven met gevaarlijk personeel'? (Y/N)")
 input("wat is uw favoriete soort kaas? (Y/N)")
-input("Heet u GerLard? (Y/N)")
+gerlard = input("Heet u GerLard? (Y/N)")
+if gerlard == "y":
+    raise NameError("U bent al aangenomen want GerLard is God")
 input("Begint je naam met een Q en eindegd het met een G? (Y/N)")
 input("Ben je dik? (Y/N)")
 
