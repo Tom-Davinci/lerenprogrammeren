@@ -4,7 +4,7 @@ if ervaring <= 4:
     if ervaring2 <= 5:
         ervaring3 = int( input("Hoeveel jaar ervaring heeft u met de acrobatiek?") )
 name = input("Wat is uw naam?")
-name = name.lower() 
+name = name.lower()
 if name == "arda":
     raise NameError("Arda is echt een kut naam!")
 diploma = input("Heeft u een MBO-4 diploma ondernemen? (Y/N)")

@@ -1,0 +1,10 @@
+playerlevel = 0
+playerhealth = 100
+playerxp = 0
+enemylevel = 0
+enemyhealth = 0
+maxplayerhealth = 100
+enemyhealthcap = 0
+enemyxp = 0
+storyblock = 0
+storyline = 0
