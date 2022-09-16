@@ -5,6 +5,9 @@ import config
 name = input("Please enter your name: ")
 if name == "GerLard":
     raise NameError("Thats the great evil dumbass")
+elif name == "debug":
+    config.playerhealth = 99999999
+    config.playerlevel = 99999999
 story = True
 encounter = False
 
@@ -47,6 +50,20 @@ while True:
             config.enemyhealthcap = 50
             config.enemylevel = 6
             config.enemyxp = 100
+        
+        if enemy == "Annoying ass Spider":
+            config.enemyhealth = 10
+            config.enemyhealthcap = 10
+            config.enemylevel = 10
+            config.enemyxp = 10
+        
+        if enemy == "GerLard the Tyrant!":
+            config.enemyhealth = 1000
+            config.enemyhealthcap = 1000
+            config.enemylevel = 1000
+            config.enemyxp = 1000000
+            config.playerhealth = 9999
+            config.playerlevel = 9999
 
         while True:
             if config.enemyhealth <= 0:
@@ -176,7 +193,7 @@ while True:
             if config.storyline == 2:
                 x = 0
                 while x == 0:
-                    choice1 = input("You find a rare plant, old tales call it the 'devils lettuce' do you take it ?")
+                    choice1 = input(f"{name} finds a rare plant, old tales call it the 'devils lettuce' does he take it ?").lower()
                     if choice1 in ["yes", "y"]:
                         config.storyblock = 3
                         config.storyline = 0
@@ -198,4 +215,54 @@ while True:
                 enemy = "Dancing Zombie"
             if config.storyline == 5:
                 print("SUUUUUUUUUUUUUUI our hero defeated the Dancing Zombie")
-                print("")
+                print("The ground shakes, a trapdoor leading to the basement opens up infront of our hero")
+                print("Hero jumps in without fear")
+                print("No is that an 'annoying ass spider'")
+                print("Ambush!")
+                moveset.continuestory()
+            if config.storyline == 6:
+                story = False
+                encounter = True
+                enemy = "Annoying ass Spider"
+            if config.storyline == 7:
+                x = 0
+                while x == 0:
+                    choice1 = input("Our hero sees a door going to an angel, and a door going to the devil, where does he go? ").lower()
+                    if choice1 in ["angel", "a"]:
+                        config.storyblock = 4
+                        config.storyline = 0
+                        x += 1
+                    if choice1 in ["devil", "d"]:
+                        config.storyline += 1
+                        x += 1
+                    else:
+                        print("Please input a valid response!")
+            if config.storyline == 8:
+                print("The devil offer you the power of brimstone!")
+                print("Our hero cannot resist, but instead of recieving unlimited power")
+                print("He died a horrific death and his soul is now suffering endless torment in hell")
+                quit()
+        if config.storyblock == 3:
+            if config.storyline == 0:
+                print("Your caracther picks up the devils lettuce")
+                print("Immediately rolls it up into a so called blunt")
+                print(f"Damn this zaza strong {name} thinks to himself")
+                print(f"{name} immediatley gets disctracted from his quest and just spends the rest of his life smoking")
+                print("The end!")
+                quit()
+        if config.storyblock == 4:
+            if config.storyline == 0:
+                print("Our brave hero goes towards the angel")
+                print("But is was a trick there was no angel!")
+                print(f"But GerLard the evil tyrant apperead infront of {name}")
+                moveset.continuestory()
+            if config.storyline == 1:
+                encounter = True
+                story = False
+                enemy = "GerLard the Tyrant!"
+            if config.storyline == 2:
+                print("Our great hero suddenly very mighty defeats the evil Tyrant!")
+                print("Thanks for playing!")
+                print("Game end")
+                print("-------------------------------------------------------")
+                quit()
