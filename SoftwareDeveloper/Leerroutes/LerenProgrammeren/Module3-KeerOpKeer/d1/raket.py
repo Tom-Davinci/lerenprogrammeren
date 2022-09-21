@@ -1,6 +1,4 @@
-x = 30
-for i in range (1, 31):
-    print(f"rocket will launch in {x}")
-    x -= 1
+for countdown in range (30, 0, -1):
+    print(f"rocket will launch in {countdown}")
 
 print("The rocket has launced")
