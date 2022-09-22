@@ -22,6 +22,9 @@ else:
     print("De telefoons zijn even duur, kies de iPhone")
     quit()
 
+if samsung > 900 and iphone > 900:
+    print("Koop geen van beide telefoons ze zijn te duur!")
+    quit()
 
 advies = round( iphone - samsung, 2)
 if advies < 0:
