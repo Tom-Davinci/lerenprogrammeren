@@ -22,8 +22,12 @@ else:
     print("De telefoons zijn even duur, kies de iPhone")
     quit()
 
+
 advies = round( iphone - samsung, 2)
-if advies > 50:
+if advies < 0:
+    advies = samsung - iphone
+    print(f"Het advies is dus de iPhone te kopen. Deze is namelijk {advies} goedkoper dan de Samsung.")
+elif advies > 50:
     print(f"Het advies is dus de Samsung te kopen. Deze is namelijk {advies} goedkoper dan de iPhone.")
 elif advies <= 50:
     print(f"Het advies is dus de iPhone te kopen. Deze is namelijk {advies} duurder dan de Samsung.")
