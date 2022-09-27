@@ -7,6 +7,6 @@ while tijd < 13:
     elif ampm == 1:
         print(f"Het is: {tijd}PM")
     if tijd == 12 and ampm == 0:
-        tijd = 1
+        tijd = 0
         ampm = 1
     tijd += 1

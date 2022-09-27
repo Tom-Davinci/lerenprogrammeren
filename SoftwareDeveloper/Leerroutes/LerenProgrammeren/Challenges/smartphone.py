@@ -46,8 +46,6 @@ elif zenfone > samsung and zenfone > iphone:
 else:
     print("De telefoons zijn even duur, kies de iPhone")
     quit()
-# kon de berekning van de laatste uitbreiding niet bedenken
-# maar geen verrassingen natuurlijk :)
 
 if samsung > 900 and iphone > 900 and zenfone > 900:
     print("Koop geen van de telefoons ze zijn te duur!")
