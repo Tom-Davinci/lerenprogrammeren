@@ -1,6 +1,7 @@
 from RobotArm import RobotArm
 robotArm = RobotArm('exercise 12')
 teller = 9
+robotArm.speed = 3
 while teller < 10 and teller > 0:
     robotArm.grab()
     kleur = robotArm.scan()

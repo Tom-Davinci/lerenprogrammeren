@@ -1,4 +1,4 @@
-print('speeltuin entree')
+print('Speeltuin entree')
 
 # welkom voor kinderen van 12 of onder de 12, maar alleen met een begeleider van 20 of ouder
 # of welkom als ze onder de 14 zijn en een speeltuinpasje hebben
