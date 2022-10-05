@@ -56,6 +56,7 @@ while teller <= rondes:
         if nog_een_keer == "nee":
             print(f"Uw eindscore was: {score}")
             print("Bedankt voor het spelen!")
+            quit()
     teller += 1
 
 print(f"Uw eindscore was: {score}")
