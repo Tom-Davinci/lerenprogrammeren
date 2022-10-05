@@ -10,7 +10,6 @@ while True:
     except:
         print("Geldig nummer invoeren!")
 
-
 score = 0
 teller = 1
 print("Gok een getal tussen de 0 en 1000!")
