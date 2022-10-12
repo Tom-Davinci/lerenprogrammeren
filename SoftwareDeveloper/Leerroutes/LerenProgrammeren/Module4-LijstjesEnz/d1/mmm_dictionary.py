@@ -14,7 +14,7 @@ for index in range(0, len(kleuren)):
     mmdict.update({kleuren[index] : 0})
 
 for index in range(0, aantal):
-    rndnum = random.randint(len(kleuren) - 1)
+    rndnum = random.randint(0, len(kleuren) - 1)
     mmdict[kleuren[rndnum]] += 1
 
 print(mmdict)
