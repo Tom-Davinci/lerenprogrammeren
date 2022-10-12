@@ -9,7 +9,10 @@ while toevoegen:
             break
         except:
             print("Geldig nummer invoeren!")
-    boodschappen.update({item : aantal})
+    if item in boodschappen.keys():
+        boodschappen[item] += aantal
+    else:
+        boodschappen.update({item : aantal})
     while True:
         keer = input("Wilt u nog wat aan de lijst toevoegen: ").lower()
         if keer in ["j", "ja"]:
