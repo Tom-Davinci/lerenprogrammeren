@@ -1,9 +1,21 @@
-kuub = 8 * 3 * 1.5
+def floatinput(maat): #string
+    while True:
+        try:
+            x = float( input(f"Voer hier de {maat} van het zwembad in: "))
+            return x
+        except:
+            print("Geldig nummer invoeren")
+
+hoogte = floatinput("hoogte")
+breedte = floatinput("breedte")
+diepte = floatinput("diepte")
 afstand = 60
 
+kuub = hoogte * breedte * diepte
 kosten_uitgraven = round( kuub * 25, 2)
 kosten_afvoeren = round( kuub * 32.50, 2)
 kosten_totaal = kosten_uitgraven + kosten_afvoeren
+
 if afstand < 50:
     if kuub < 20:
         kosten_voorrij = 100 + afstand * 1.25
