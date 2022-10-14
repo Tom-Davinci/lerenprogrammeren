@@ -24,7 +24,7 @@ if afstand < 50:
         kosten_voorrij = 250 + afstand * 2.15
 else:
     if kuub < 20:
-        kosten_voorrij = 100 + afstand * 1.15,
+        kosten_voorrij = 100 + afstand * 1.15
     else:
         kosten_voorrij = 250 + afstand * 2.05
 kosten_voorrij = round(kosten_voorrij, 2)
