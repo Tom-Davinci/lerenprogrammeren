@@ -19,10 +19,16 @@ gewicht /= 1000
 if kleur == "yellow":
     kleur = "geele"
 elif kleur == "green":
-    kleur == "groene"
+    kleur = "groene"
 elif kleur == "red":
-    kleur == "rode"
+    kleur = "rode"
 elif kleur == "brown":
-    kleur == "bruine"
+    kleur = "bruine"
+elif kleur == "black":
+    kleur = "zwarte"
+elif kleur == "purple":
+    kleur = "paarse"
+elif kleur == "pink":
+    kleur = "roze"
 
 print(f'De "{naam}" ({lengte} letters) heeft een {kleur} kleur en een gewicht van {gewicht} kg.')
