@@ -16,19 +16,16 @@ for index in range(0, len(fruitmand)):
 
 gewicht /= 1000
 
-if kleur == "yellow":
-    kleur = "geele"
-elif kleur == "green":
-    kleur = "groene"
-elif kleur == "red":
-    kleur = "rode"
-elif kleur == "brown":
-    kleur = "bruine"
-elif kleur == "black":
-    kleur = "zwarte"
-elif kleur == "purple":
-    kleur = "paarse"
-elif kleur == "pink":
-    kleur = "roze"
+kleur_translation = {
+    "yellow" : "geele",
+    "green" : "groene",
+    "red" : "rode",
+    "brown" : "bruine",
+    "black" : " zwarte",
+    "purple" : "paarse",
+    "pink" : "roze"
+}
+
+kleur = kleur_translation[kleur]
 
 print(f'De "{naam}" ({lengte} letters) heeft een {kleur} kleur en een gewicht van {gewicht} kg.')

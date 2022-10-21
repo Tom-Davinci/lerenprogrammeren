@@ -10,8 +10,8 @@ while True:
     except:
         print("Geldig nummer invoeren")
 
-for index in range(0, len(kleuren)):
-    mmdict.update({kleuren[index] : 0})
+for kleur in kleuren:
+    mmdict[kleur] = 0
 
 for index in range(0, aantal):
     rndnum = random.randint(0, len(kleuren) - 1)
