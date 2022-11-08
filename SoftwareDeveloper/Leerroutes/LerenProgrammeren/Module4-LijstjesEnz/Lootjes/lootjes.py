@@ -10,11 +10,10 @@ while True:
         namen.append(naam)
     verder = input("Nog een naam?\n").lower()
     if verder in ["n", "no", "nee"]:
-        break
-
-if len(namen) < 3:
-    print("Meer dan 2 namen invoeren!")
-    quit()
+        if len(namen) > 2:
+            break
+        else:
+            print("Meer dan 2 namen!")
 
 shuffling = True
 while shuffling:
