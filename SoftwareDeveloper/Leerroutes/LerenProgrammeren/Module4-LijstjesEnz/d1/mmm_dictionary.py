@@ -17,4 +17,8 @@ for index in range(0, aantal):
     rndnum = random.randint(0, len(kleuren) - 1)
     mmdict[kleuren[rndnum]] += 1
 
+for kleur in kleuren:
+    if mmdict[kleur] == 0:
+        mmdict.pop(kleur)
+
 print(mmdict)
