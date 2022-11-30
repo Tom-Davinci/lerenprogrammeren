@@ -1,0 +1,14 @@
+h1{
+    color:white;
+    background-color: black;
+    border: black solid 10px;
+    margin: 20px;
+}
+
+a{
+    color:blue;
+}
+
+a:hover{
+    color:darkblue;
+}
