@@ -3,9 +3,9 @@ deck = []
 kleuren = ("harten", "klaveren", "schoppen", "ruiten")
 nummers = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "boer", "vrouw", "heer", "aas")
 
-for index in range(0, 4):
-    for i in range(0, 13):
-        deck.append(kleuren[index] + " " + nummers[i])
+for kleur in kleuren:
+    for num in nummers:
+        deck.append(f"{kleur} {num}")
 
 deck.append("joker")
 deck.append("joker")
