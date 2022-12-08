@@ -26,27 +26,36 @@ for x in range( len(groepA)):
         "doelsaldo" : 0
         })
 
-print(f"Wedstrijd 1 score {groepA[0]} - {groepA[1]}")
-print(f"Score {groepA[0]}")
-score1 = intinput()
-print(f"Score {groepA[1]}")
-score2 = intinput()
+rondes = 1
+t1 = -1
+t2 = 0
 
-t1 = 0
-t2 = 1
 
-if score1 > score2:
-    doelsaldo = score1 - score2
-    teams[t1]["punten"] += GEWONNEN
-    teams[t1]["doelsaldo"] += doelsaldo
-    teams[t2]["doelsaldo"] -= doelsaldo
-else:
-    doelsaldo = score2 - score1
-    teams[t2]["punten"] += GEWONNEN
-    teams[t2]["doelsaldo"] += doelsaldo
-    teams[t1]["doelsaldo"] -= doelsaldo
+while rondes < 3:
+    t1 += 1
+    t2 += 1
 
-print(f"Wedstrijd {groepA[0]} - {groepA[1]} eindigde in {score1} - {score2}")
+    print(f"Wedstrijd {rondes} score {groepA[t1]} - {groepA[t2]}")
+    print(f"Score {groepA[t1]}")
+    score1 = intinput()
+    print(f"Score {groepA[t2]}")
+    score2 = intinput()
+
+    if score1 > score2:
+        doelsaldo = score1 - score2
+        teams[t1]["punten"] += GEWONNEN
+        teams[t1]["doelsaldo"] += doelsaldo
+        teams[t2]["doelsaldo"] -= doelsaldo
+    else:
+        doelsaldo = score2 - score1
+        teams[t2]["punten"] += GEWONNEN
+        teams[t2]["doelsaldo"] += doelsaldo
+        teams[t1]["doelsaldo"] -= doelsaldo
+
+    print(f"Wedstrijd {groepA[t1]} - {groepA[t2]} eindigde in {score1} - {score2}")
+    rondes += 1
+
+
 print("overzicht groep A")
 for i in range( len(groepA)):
     naam = teams[i]["name"]
