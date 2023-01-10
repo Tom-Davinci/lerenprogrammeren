@@ -265,4 +265,13 @@ while True:
                 print("Thanks for playing!")
                 print("Game end")
                 print("-------------------------------------------------------")
-                quit()
+    while True:
+        end = input("Play again?\n").lower()
+        if end in ["y", "yes", "ye"]:
+            config.storyblock = 0
+            config.storyline = 0
+            break
+        elif end in ["n", "no",]:
+            quit()
+        else:
+            print("Give a correct input [Y/N]")

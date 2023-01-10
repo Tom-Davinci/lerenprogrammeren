@@ -5,24 +5,12 @@ h1{
     text-align: center;
 }
 
-h2{
+h2, h3, p, li{
     color: white;
 }
 
-h3{
-    color: white;
-}
-
-p{
-    color: white;
-}
-
-nav.inline>li{
+nav.inline li{
     display: inline;
-}
-
-li{
-    color: white;
 }
 
 div{

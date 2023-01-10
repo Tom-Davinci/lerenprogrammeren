@@ -11,4 +11,4 @@ def fibonacci(n1, n2, amount):
 
 amount -= 1
 print(0)
-print( fibonacci(0, 1, amount))
+fibonacci(0, 1, amount)
