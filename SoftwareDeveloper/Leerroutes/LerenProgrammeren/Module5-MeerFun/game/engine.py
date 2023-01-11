@@ -4,12 +4,6 @@ def scenario_get(scenarios : list,name : str) -> int:
             return x
 
 def ways_chooser(ways : list) -> str:
-    if ways == "death":
-        print("you die")
-        quit()
-    elif ways == "win":
-        print("you win!")
-        quit()
     awnser_check = []
     for way in ways:
         print(f"{way[0]}. {way}")
@@ -21,17 +15,26 @@ def ways_chooser(ways : list) -> str:
                 if way[0] == x:
                     return way
 
+def wincon(ways : list):
+    if ways == "death":
+        print("you die")
+        return False
+    elif ways == "win":
+        print("you win!")
+        return False
+    else:
+        return True
+
 def desc_getter(scenarios : list,scenario : int) -> str:
     return scenarios[scenario]["desc"]
 
 def game(scenarios : list, name : str):
-    while True:
+    endcon = True
+    while endcon:
         scenario = scenario_get(scenarios, name)
-        try:
-            desc = desc_getter(scenarios, scenario)
-            print(desc)
+        desc = desc_getter(scenarios, scenario)
+        print(desc)
+        endcon = wincon(scenarios[scenario]["ways"])
+        if endcon:
             name = ways_chooser(scenarios[scenario]["ways"])
-        except TypeError:
-            break
     print("thanks for playing")
-    quit()
