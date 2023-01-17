@@ -1,6 +1,6 @@
 amount = int( input("Hoe veel nummers van de fibonacci rij wilt u?\n"))
 
-def fibonacci(amount: int):
+def fibonacci(amount: int) -> list:
     num1 = 0
     num2 = 1
     end = [0, 1]

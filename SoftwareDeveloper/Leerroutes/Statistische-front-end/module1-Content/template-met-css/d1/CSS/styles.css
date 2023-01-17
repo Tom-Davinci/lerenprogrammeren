@@ -1,0 +1,44 @@
+h1{
+    color:white;
+    background-color: rgb(46, 55, 55);
+    margin: 20px;
+    text-align: center;
+}
+
+h2{
+    color: white;
+}
+
+h3{
+    color: white;
+}
+
+p{
+    color: white;
+}
+
+nav.inline>li{
+    display: inline;
+}
+
+li{
+    color: white;
+}
+
+div{
+    color: darkblue;
+}
+
+body{
+    padding: 20px;
+    margin: 10px;
+    background-color: black;
+}
+
+a{
+    color:blue;
+}
+
+a:hover{
+    color:darkblue;
+}

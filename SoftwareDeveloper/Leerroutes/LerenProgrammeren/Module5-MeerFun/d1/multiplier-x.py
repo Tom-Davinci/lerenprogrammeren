@@ -1,4 +1,4 @@
-def multiplier(x : int):
+def multiplier(x : int) -> str:
     end = ""
     for i in range(1, 11):
         end += f"{i} x {x} = {x * i}\n"

@@ -1,4 +1,4 @@
-def agename():
+def agename() -> list[dict]:
     names = []
     while True:
         name = input("Voer hier een naam in:\n").lower()
