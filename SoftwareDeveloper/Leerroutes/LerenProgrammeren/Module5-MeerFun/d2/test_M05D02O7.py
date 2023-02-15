@@ -57,7 +57,6 @@ testList2 = [{
     }
 }]
 
-print(getItemsAsText(testList2))
 if getItemsAsText(testList2) != '1 ronde Voetbal, 11x Patat, 1l Cola, 5dl Sinas':
     print_colorvars(vars=['Test 3 is False'], color='red')
 else:
