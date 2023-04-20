@@ -1,10 +1,21 @@
-def points(games):
-    total = 0
-    for game in games:
-        if game[0] > game[2]:
-            total += 3
-        elif game[0] == game[2]:
-            total += 1
-    return total
+def dirReduc(arr):
+    lastDir, reducing = "", True
+    opposites = {
+        "NORTH" : "SOUTH",
+        "SOUTH" : "NORTH",
+        "EAST" : "WEST",
+        "WEST" : "EAST"
+    }
+    while reducing:
+        reducing = False
+        for index in range(3):
+            print(index)
+            print(arr)
+            if lastDir == opposites[arr[index]]:
+                arr.pop(index)
+                arr.pop(index - 1)
+                reducing = True
+            lastDir = arr[index]
+    return arr
 
-print(points(['1:1','2:2','3:3','4:4','2:2','3:3','4:4','3:3','4:4','4:4']))
+print(dirReduc(["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]))

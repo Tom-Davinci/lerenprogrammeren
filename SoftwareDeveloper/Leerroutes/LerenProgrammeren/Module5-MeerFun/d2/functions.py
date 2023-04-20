@@ -123,29 +123,22 @@ def getInterestingInvestors(investors:list) -> list:
 
 def getAdventuringInvestors(investors:list) -> list:
     investors = getInterestingInvestors(investors)
-    adventuring = []
-    for investor in investors:
-        if investor["adventuring"]:
-            adventuring.append(investor)
-    return adventuring
+    return getAdventuringPeople(investors)
 
 def getTotalInvestorsCosts(investors:list, gear:list) -> float:
     investors = getAdventuringInvestors(investors)
-    totalCost = 0
-    for x in range( len(investors)):
-        totalCost += getItemsValueInGold(gear)
-        totalCost += getJourneyFoodCostsInGold(1, 1)
-        totalCost += getTotalRentalCost(1, 1)
-    return round( totalCost, 2)
+    return round( len(investors) * (getItemsValueInGold(gear) + getJourneyFoodCostsInGold(1, 1) + getTotalRentalCost(1, 1)), 2)
 
 ##################### M04.D02.O10 #####################
 
 def getMaxAmountOfNightsInInn(leftoverGold:float, people:int, horses:int) -> int:
-    x, cost = 1, 0
+    x, cost = 0, 0
     while cost < leftoverGold:
-        cost = getJourneyInnCostsInGold(1, people, horses)
+        cost = getJourneyInnCostsInGold(x, people, horses)
         x += 1
-    return x - 1
+    if leftoverGold == 0:
+        return 0
+    return x - 2
 
 def getJourneyInnCostsInGold(nightsInInn:int, people:int, horses:int) -> float:
     cost = 0
@@ -156,15 +149,40 @@ def getJourneyInnCostsInGold(nightsInInn:int, people:int, horses:int) -> float:
 ##################### M04.D02.O12 #####################
 
 def getInvestorsCuts(profitGold:float, investors:list) -> list:
-    pass
+    investors = getInterestingInvestors(investors)
+    investorMoney = []
+    for investor in investors:
+        cost = round( investor["profitReturn"] / 100 * profitGold, 2)
+        investorMoney.append(cost)
+    return investorMoney
 
-def getAdventurerCut(profitGold:float, investorsCuts:list, fellowship:list) -> float:
-    pass
+def getAdventurerCut(profitGold:float, investorsCuts:list, fellowship:int) -> float:
+    return round((profitGold - sum(investorsCuts)) / fellowship, 2)
 
 ##################### M04.D02.O13 #####################
 
 def getEarnigs(profitGold:float, mainCharacter:dict, friends:list, investors:list) -> list:
-    pass
+    people = [mainCharacter] + friends + investors
+    earnings = []
+
+    # haal de juiste inhoud op
+    adventuringFriends = getAdventuringFriends(friends)
+    interestingInvestors = getInterestingInvestors(investors)
+    adventuringInvestors = getAdventuringInvestors(investors)
+    investorsCuts = getInvestorsCuts(profitGold, investors)
+    goldCut = getAdventurerCut(profitGold, investorsCuts, len(adventuringFriends))
+    
+    # verdeel de uitkomsten
+    for person in people:
+        if person in adventuringFriends:
+            
+        earnings.append({
+            'name'   : person["name"],
+            'start'  : start,
+            'end'    : end
+        })
+
+    return earnings
 
 ##################### view functions #####################
 def print_colorvars(txt:str='{}', vars:list=[], color:str='yellow') -> None:
