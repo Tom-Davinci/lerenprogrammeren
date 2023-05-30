@@ -34,6 +34,7 @@ def getJourneyFoodCostsInGold(people:int, horses:int) -> float:
     cost += people * COST_FOOD_HUMAN_COPPER_PER_DAY
     cost += horses * COST_FOOD_HORSE_COPPER_PER_DAY
     return round( copper2gold(cost) * JOURNEY_IN_DAYS, 2)
+
 ##################### M04.D02.O5 #####################
 
 def getFromListByKeyIs(list:list, key:str, value:any) -> list:
@@ -117,7 +118,7 @@ def getCashInGoldFromPeople(people:list) -> float:
 def getInterestingInvestors(investors:list) -> list:
     interesting = []
     for investor in investors:
-        if investor["profitReturn"] < 10:
+        if investor["profitReturn"] <= 10:
             interesting.append(investor)
     return interesting
 
@@ -156,7 +157,7 @@ def getInvestorsCuts(profitGold:float, investors:list) -> list:
         investorMoney.append(cost)
     return investorMoney
 
-def getAdventurerCut(profitGold:float, investorsCuts:list, fellowship:int) -> float:
+def getAdventurerCut(profitGold:float, investorsCuts:list, fellowship:int) -> float: #fellowship = amount of adventurers
     return round((profitGold - sum(investorsCuts)) / fellowship, 2)
 
 ##################### M04.D02.O13 #####################
@@ -164,18 +165,32 @@ def getAdventurerCut(profitGold:float, investorsCuts:list, fellowship:int) -> fl
 def getEarnigs(profitGold:float, mainCharacter:dict, friends:list, investors:list) -> list:
     people = [mainCharacter] + friends + investors
     earnings = []
-
+    investorCount = 0
+    
     # haal de juiste inhoud op
     adventuringFriends = getAdventuringFriends(friends)
     interestingInvestors = getInterestingInvestors(investors)
     adventuringInvestors = getAdventuringInvestors(investors)
+    amountAdventurers = len(adventuringInvestors) + len(adventuringFriends) + 1
     investorsCuts = getInvestorsCuts(profitGold, investors)
-    goldCut = getAdventurerCut(profitGold, investorsCuts, len(adventuringFriends))
+    goldCut = getAdventurerCut(profitGold, investorsCuts, amountAdventurers)
     
     # verdeel de uitkomsten
     for person in people:
-        if person in adventuringFriends:
-            
+        start = getPersonCashInGold(person["cash"])
+        if person in interestingInvestors:
+            if person in adventuringInvestors:
+                end = start + investorsCuts[investorCount] + goldCut
+            else:
+                end = start + investorsCuts[investorCount]
+            investorCount += 1
+        elif person in adventuringFriends:
+            end = start + goldCut - 10
+        elif person == mainCharacter:
+            end = start + goldCut + (len(adventuringFriends) * 10)
+        else:
+            end = start
+        
         earnings.append({
             'name'   : person["name"],
             'start'  : start,

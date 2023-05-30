@@ -50,7 +50,6 @@ if getInvestorsCuts(randint(1,1000), testInverstorsList3) != []:
 else:
     print_colorvars(vars=['Test 4 is correct'], color='green')
 
-
 if getInvestorsCuts(randint(1,1000), []) != []:
     print_colorvars(vars=['Test 5 is False'], color='red')
 else:
