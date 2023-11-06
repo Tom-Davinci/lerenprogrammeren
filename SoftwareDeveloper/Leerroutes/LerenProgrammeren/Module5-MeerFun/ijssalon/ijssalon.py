@@ -1,6 +1,7 @@
 from functies import *
 
 nogEen = "ja"
+zakelijk = ""
 bonnetje = {
     "a" : 0,
     "c" : 0,
@@ -21,14 +22,21 @@ totaleBolletjes = 0
 
 print("Welkom bij Papi Gelato!")
 
-while nogEen == "ja":
-    aantalBolletjes = vraagAantalBolletjes()
-    bonnetje = smaakBolletjes(aantalBolletjes, bonnetje)
-    bakjeHoorntje = bepBakjeHoorntje(aantalBolletjes)
-    toppings = toppingAdd(toppings, bakjeHoorntje, aantalBolletjes)
-    print(f"Hier is uw {bakjeHoorntje} met {aantalBolletjes} bollen!")
-    bonnetje = addBonnetje(bakjeHoorntje, bonnetje)
-    totaleBolletjes += aantalBolletjes
-    nogEen = errInput("Wilt u nog een keer bestellen?\n", ["ja", "nee"], True)
+zakelijk = zakelijkCheck()
 
-print(printBonnetje(bonnetje, totaleBolletjes, toppings))
+while nogEen == "ja":
+    aantalBolletjes = vraagAantalBolletjes(zakelijk)
+    bonnetje = smaakBolletjes(aantalBolletjes, bonnetje, zakelijk)
+    bakjeHoorntje = bepBakjeHoorntje(aantalBolletjes, zakelijk)
+    toppings = toppingAdd(toppings, bakjeHoorntje, aantalBolletjes, zakelijk)
+    if not zakelijk:
+        print(f"Hier is uw {bakjeHoorntje} met {aantalBolletjes} bollen!")
+    bonnetje = addBonnetje(bakjeHoorntje, bonnetje, zakelijk)
+    totaleBolletjes += aantalBolletjes
+    if zakelijk:
+        nogEen = "nee"
+    else:
+        nogEen = errInput("Wilt u nog een keer bestellen?\n", ["ja", "nee"], True)
+
+
+print(printBonnetje(bonnetje, totaleBolletjes, toppings, zakelijk))

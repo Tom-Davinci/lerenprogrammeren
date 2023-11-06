@@ -1,0 +1,17 @@
+#images1{
+    position: fixed;
+    top: 100px;
+    left: 10px;
+    height: 100px;
+    width: 80%;
+    border: 1px solid black;
+}
+
+#images2{
+    position: fixed;
+    top: 250px;
+    left: 10px;
+    height: 100px;
+    width: 80%;
+    border: 1px solid black;
+}

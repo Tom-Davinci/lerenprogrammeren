@@ -4,7 +4,7 @@ def errInput(msg:str, error:list, trueFalse:bool) -> str:
         if bool(x in error) == trueFalse:
             return x
         else:
-            print("Dat herken ik niet!")
+            print("Dat is geen optie die we aanbieden!")
 
 def intInput(msg:str) -> int:
     while True:
@@ -12,11 +12,14 @@ def intInput(msg:str) -> int:
             x = int( input(msg))
             return x
         except:
-            print("Dat herken ik niet!")
+            print("Dat is geen optie die we aanbieden!")
 
-def vraagAantalBolletjes() -> int:
+def vraagAantalBolletjes(zakelijk:bool) -> int:
     while True:
-        aantalBolletjes = intInput("Hoeveel bolletjes wilt u?\n")
+        if zakelijk:
+            aantalBolletjes = intInput("Hoeveel liter ijs wilt u?\n")
+        else:
+            aantalBolletjes = intInput("Hoeveel bolletjes wilt u?\n")
         if aantalBolletjes > 8:
             print("Te veel bolletjes!")
         elif aantalBolletjes < 1:
@@ -24,50 +27,73 @@ def vraagAantalBolletjes() -> int:
         else:
             return aantalBolletjes
 
-def bepBakjeHoorntje(bolletjes:int) -> str:
+def bepBakjeHoorntje(bolletjes:int, zakelijk:bool) -> str:
+    if zakelijk:
+        return "null"
     if bolletjes <= 4:
         return errInput("Hoorntje of Bakje?\n",["hoorntje", "bakje"], True)
     else:
         return "bakje"
 
-def addBonnetje(bakjeHoorntje : str, bonnetje : dict) -> dict:
-    bonnetje[bakjeHoorntje] += 1
+def addBonnetje(bakjeHoorntje : str, bonnetje : dict, zakelijk:bool) -> dict:
+    if zakelijk:
+        return bonnetje
+    else:
+        bonnetje[bakjeHoorntje] += 1
     return bonnetje
 
-def printBonnetje(bonnetje : dict, aantalBolletjes : int, toppings : dict) -> str:
+def printBonnetje(bonnetje : dict, aantalBolletjes : int, toppings : dict, zakelijk:bool) -> str:
     end = f"-------['Papi Gelatto']-------\n"
 
-    if bonnetje["a"] != 0:
-        end += f"Aarbei:   {bonnetje['a']} x $1,10 = ${round(bonnetje['a'] * 1.10, 2)}\n"
+    if zakelijk:
+        if bonnetje["a"] != 0:
+            end += f"Aarbei:   {bonnetje['a']} x $9,80 = ${round(bonnetje['a'] * 9.80, 2)}\n"
 
-    if bonnetje["c"] != 0:
-        end += f"Chocolade   {bonnetje['c']} x $1,10 = ${round(bonnetje['c'] * 1.10, 2)}\n"
+        if bonnetje["c"] != 0:
+            end += f"Chocolade   {bonnetje['c']} x $9,80 = ${round(bonnetje['c'] * 9.80, 2)}\n"
 
-    if bonnetje["v"] != 0:
-        end += f"Vanille:   {bonnetje['v']} x $1,10 = ${round(bonnetje['v'] * 1.10, 2)}\n"
+        if bonnetje["v"] != 0:
+            end += f"Vanille:   {bonnetje['v']} x $9,80 = ${round(bonnetje['v'] * 9.80, 2)}\n"
 
-    if bonnetje["m"] != 0:
-        end += f"Munt:   {bonnetje['m']} x $1,10 = ${round(bonnetje['m'] * 1.10, 2)}\n"
-
-    if bonnetje["bakje"] != 0:
-        end += f"bakje(s):   {bonnetje['bakje']} x $0.75= ${round(bonnetje['bakje'] * 0.75, 2)}\n"
+        end += "\n"
+        
+        end += f"totaal = ${round(aantalBolletjes * 9.80, 2)}\n"
+        end += f"btw (6%) = ${round((aantalBolletjes * 9.80) * 0.06, 2)}"
     
-    if bonnetje["hoorntje"] != 0:
-        end += f"hoortnje(s):   {bonnetje['hoorntje']} x $1,25 = ${round(bonnetje['hoorntje'] * 1.25, 2)}\n"
+    else:
+        if bonnetje["a"] != 0:
+            end += f"Aarbei:   {bonnetje['a']} x $0,95 = ${round(bonnetje['a'] * 0.95, 2)}\n"
+        
+        if bonnetje["c"] != 0:
+            end += f"Chocolade   {bonnetje['c']} x $0,95 = ${round(bonnetje['c'] * 0.95, 2)}\n"
 
-    if toppings["slagroom"] > 0 or toppings["sprinkels"] > 0 or toppings["caraHoorn"] > 0 or toppings["caraBak"]:
-        end += toppingBonnetje(toppings)
+        if bonnetje["v"] != 0:
+            end += f"Vanille:   {bonnetje['v']} x $0,95 = ${round(bonnetje['v'] * 0.95, 2)}\n"
 
-    end += f"totaal = ${round(aantalBolletjes * 1.10 + bonnetje['bakje'] * 0.75 + bonnetje['hoorntje'] * 1.25, 2)}"
+        if bonnetje["bakje"] != 0:
+            end += f"bakje(s):   {bonnetje['bakje']} x $0.75= ${round(bonnetje['bakje'] * 0.75, 2)}\n"
+    
+        if bonnetje["hoorntje"] != 0:
+            end += f"hoortnje(s):   {bonnetje['hoorntje']} x $1,25 = ${round(bonnetje['hoorntje'] * 1.25, 2)}\n"
+
+        if toppings["slagroom"] > 0 or toppings["sprinkels"] > 0 or toppings["caraHoorn"] > 0 or toppings["caraBak"]:
+            end += toppingBonnetje(toppings)
+
+        end += f"totaal = ${round(aantalBolletjes * 1.10 + bonnetje['bakje'] * 0.75 + bonnetje['hoorntje'] * 1.25, 2)}"
     return end
 
-def smaakBolletjes(aantalBolletjes : int, bonnetje : dict) -> dict:
+def smaakBolletjes(aantalBolletjes : int, bonnetje : dict, zakelijk:bool) -> dict:
     for x in range(1, aantalBolletjes + 1):
-        smaak = errInput(f"Welke smaak wilt u voor bolletje #{x}?\nA) Aardbei\nC) Chocolade\nM) Munt\nV) vanille\n", ["a","c","m","v"], True)
+        if zakelijk:
+            smaak = errInput(f"Welke smaak wilt u voor liter #{x}?\nA) Aardbei\nC) Chocolade\nV) vanille\n", ["a","c","v"], True)
+        else:
+            smaak = errInput(f"Welke smaak wilt u voor bolletje #{x}?\nA) Aardbei\nC) Chocolade\nV) vanille\n", ["a","c","v"], True)
         bonnetje[smaak] += 1
     return bonnetje
 
-def toppingAdd(toppings : dict, bakjeHoorntje : str, aantalBolletjes : int) -> dict:
+def toppingAdd(toppings : dict, bakjeHoorntje : str, aantalBolletjes : int, zakelijk:bool) -> dict:
+    if zakelijk:
+        return "null"
     topping = errInput("Welke Toppings wilt u:\nSlagroom\nSprinkels\nCaramel\n", ["slagroom", "sprinkels", "caramel"], True)
     if topping == "slagroom":
         toppings[topping] += 1
@@ -81,9 +107,19 @@ def toppingAdd(toppings : dict, bakjeHoorntje : str, aantalBolletjes : int) -> d
     return toppings
 
 def toppingBonnetje(toppings : dict) -> str:
+    if toppings == "null":
+        return "null"
     total = 0
     total += toppings["slagroom"] * 0.5
     total += toppings["sprinkels"] * 0.3
     total += toppings["caraBak"] * 0.9
     total += toppings["caraHoorn"] * 0.6
     return f"Toppings = ${round(total, 2)}\n"
+
+def zakelijkCheck()-> str:
+    zakelijk = errInput("Bent u een 1) particuliere of 2) zakelijke klant?\n", ["particulier", "zakelijk", "1", "2"], True)
+    if zakelijk == "particulier" or zakelijk == "1":
+        zakelijk = False
+    else:
+        zakelijk = True
+    return zakelijk
