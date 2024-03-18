@@ -1,5 +1,8 @@
 import random, time
 
+debug = False
+UNIVERSAL_TIME_CONTROL = 1
+
 #genereert het deck van 108 kaarten
 def generateDeck() -> list:
     deck = []
@@ -22,11 +25,11 @@ def generateDeck() -> list:
     return deck
 
 #genereert de spelers die in het spel zitten
-def generatePlayers(playerCount) -> list:
+def generatePlayers(playerCount : int) -> list:
     players = []
 
     for player in range(1, playerCount + 1):
-        players.append({"playerNr" : player, "hand" : []})
+        players.append({"playerNr" : player, "hand" : [], "extraDraw" : 0})
     return players
 
 #genereert de startende handen van de spelers
@@ -73,54 +76,74 @@ def game():
 #main loop van het spel 
 def gameLoop(deck : list, players : list, cardsInplay : list):
     reverse = False
-    turn = 1
+    skip = False
+    turn = 0
     while True:
+        print(f"turn: player {turn + 1}")
+        time.sleep(UNIVERSAL_TIME_CONTROL)
         player = players[turn]
-        playTurn(player, cardsInplay, deck)
-        turn = calcNextturn(players, reverse, turn)
-        quit()
-    pass
+        player, cardsInplay, deck, reverse, skip = playTurn(player, cardsInplay, deck, players, turn, reverse, skip)
+        turn, skip = calcNextturn(players, reverse, turn, skip)
 
 #berekent wie de volgende turn neemt
-def calcNextturn(players : list, reverse : bool, turn : int) -> int:
+def calcNextturn(players : list, reverse : bool, turn : int, skip : bool) -> int:
     playerCount = len(players)
-    if not reverse:
-        turn += 1
-        if turn > playerCount:
-            turn = 1
+    if not skip:
+        if not reverse:
+            turn += 1
+            if turn >= playerCount:
+                turn = 0
+        else:
+            turn -= 1
+            if turn <= 0:
+                turn = playerCount - 1
+        return turn, skip
+    
     else:
-        turn -= 1
-        if turn <= 0:
-            turn = playerCount
-    return turn
+        if not reverse:
+            turn += 2
+            if turn == playerCount + 1:
+                turn = 1
+            elif turn == playerCount:
+                turn = 0
+        else:
+            turn -= 2
+            if turn == -1:
+                turn = 2
+            elif turn == 0:
+                turn = 3
+        
+        skip = False
+        return turn, skip        
 
 #pakt kaart uit deck
 def drawCard(deck : list, player : dict):
     random.shuffle(deck)
-    player["cards"].append(deck[0])
+    player["hand"].append(deck[0])
     deck.pop(0)
+    print(f"player {player['playerNr']} draws a card")
+    time.sleep(UNIVERSAL_TIME_CONTROL)
     return deck, player
 
 #speelt beurt van de speler af
-def playTurn(player : dict, cardsInplay : list, deck : list):
+def playTurn(player : dict, cardsInplay : list, deck : list, players : list, turn : int, reverse : bool, skip : bool):
     topCard = findTopCard(cardsInplay)
     playableCards = findPlayableCards(player["hand"], topCard)
-
-    if playableCards == []:
+    if playableCards == [] or len(playableCards) == 0:
         drawCard(deck, player)
+        if player["extraDraw"] > 0:
+            for x in range(0, player["extraDraw"]-1):
+                drawCard(deck, player)
+            player["extraDraw"] = 0
     else:
-        optimalCard = findOptimalCard(playableCards)
-        print(optimalCard)
-        playCard(player, cardsInplay, optimalCard)
+        optimalCard = findOptimalCard(playableCards, player)
+        players, reverse, skip = playCard(player, cardsInplay, optimalCard, players, turn, reverse, deck, skip)
     
     if player["hand"] == []:
-        playerNr = player["playerNr"]
-        print(f"{player} has won!")
+        print(f"{player['playerNr']} has won!")
         quit()
     else:
-        return player, cardsInplay, deck
-
-
+        return player, cardsInplay, deck, reverse, skip
 
 #vind boventste kaart
 def findTopCard(cardsInplay : list) -> dict:
@@ -137,56 +160,130 @@ def findPlayableCards(hand : list, topCard : dict) -> list:
     return playableCards
 
 #vind de beste kaart om te spelen volgens de regels uitgezet
-def findOptimalCard(playableCards : list) -> dict:
-
+def findOptimalCard(playableCards : list, player : dict) -> dict:
     #vind of er pest kaarten of niet zijn
-    bullyCards = cardSort(playableCards, "bully", "type")
+    bullyCards, playableCards = cardSort(playableCards, "bully", "type")
+    if debug:
+        print(type(bullyCards))
+
+    if player["extraDraw"] > 0:
+        sortedCards, bullyCards = cardSort(bullyCards, "+2", "num")
+        if len(sortedCards) > 0:
+            return sortedCards[0]
+        sortedCards, bullyCards = cardSort(bullyCards, "+4", "num")
+        if len(sortedCards) > 0:
+            return sortedCards[0]
 
     #kiest willekeurige pestkaart als die er zijn
-    if len(bullyCards) > -1:
+    if len(bullyCards) > 0:
         return bullyCards[0]
     
     #sorteerd kaarten met kleur en welke grootte ze zijn
     else:
-        yellowCards = cardSort(playableCards, "yellow", "colour")
-        redCards = cardSort(playableCards, "red", "colour")
-        blueCards = cardSort(playableCards, "blue", "colour")
-        greenCards = cardSort(playableCards, "green", "colour")
-        colours = [len(yellowCards), len(redCards), len(blueCards), len(greenCards)]
-        colours.sort()
+        yellowCards, playableCards = cardSort(playableCards, "yellow", "colour")
+        redCards, playableCards = cardSort(playableCards, "red", "colour")
+        blueCards, playableCards = cardSort(playableCards, "blue", "colour")
+        greenCards, playableCards = cardSort(playableCards, "green", "colour")
+        colours = [yellowCards, redCards, blueCards, greenCards]
 
-        if len(yellowCards) == colours[0]:
-            yellowCards.sort(key="num", reverse=True)
+        playableColours = []
+        for colour in colours:
+            if len(colour) > 0:
+                playableColours.append(len(colour))
+        playableColours.sort(reverse=True)
+
+        if len(yellowCards) == playableColours[0]:
+            yellowCards.sort(key=lambda x: x['num'], reverse=True)
             return yellowCards[0]
-        elif len(redCards) == colours[0]:
-            redCards.sort(key="num",reverse=True)
+        elif len(redCards) == playableColours[0]:
+            redCards.sort(key=lambda x: x['num'], reverse=True)
             return redCards[0]
-        elif len(blueCards) == colours[0]:
-            blueCards.sort(key="num",reverse=True)
+        elif len(blueCards) == playableColours[0]:
+            blueCards.sort(key=lambda x: x['num'], reverse=True)
             return blueCards[0]
-        elif len(greenCards) == colours[0]:
-            greenCards.sort(key="num",reverse=True)
+        elif len(greenCards) == playableColours[0]:
+            greenCards.sort(key=lambda x: x['num'], reverse=True)
             return greenCards[0] 
-        
 
 #sorteert kaarten
 def cardSort(cards : list, type : str, sortBy : str) -> list:
     sortedCards = []
-
     for card in cards:
         if card[sortBy] == type:
             sortedCards.append(card)
             cards.remove(card)
-    return sortedCards, cards
+    return list(sortedCards), cards
 
 #speelt optimale kaart
-def playCard(player : dict, cardsInplay : list, optimalCard : dict) -> list:
-    cardsInplay.append(optimalCard)
-    print(player["hand"])
-    index = player["hand"].index(optimalCard) #??????????????
-    player["hand"].pop(index)
-    return player, cardsInplay
+def playCard(player : dict, cardsInplay : list, optimalCard : dict, players : list, turn : int, reverse : bool, deck : list, skip : bool) -> list:
+    if optimalCard["colour"] == "black":
+        optimalCard = blackPlayer(optimalCard)
 
+    if optimalCard["num"] == "turn":
+        if reverse == True:
+            reverse = False
+        elif reverse == False:
+            reverse = True
+
+    if optimalCard["num"] == "skip":
+        skip = True
+
+    if optimalCard["num"] == "+2" or optimalCard["num"] == "+4":
+        players, player = plusPlayer(optimalCard, players, turn, reverse, player)
+    elif optimalCard["num"] != "+2" or optimalCard["num"] != "+4" and player["extraDraw"] > 0:
+        for x in range(0, player["extraDraw"]):
+            drawCard(deck, player)
+        player["extraDraw"] = 0
+
+    cardsInplay.append(optimalCard)
+    print(f"player '{player['playerNr']}' plays {optimalCard['colour']} {optimalCard['num']}")
+    time.sleep(UNIVERSAL_TIME_CONTROL)
+    print(f"player '{player['playerNr']}' has {len(player['hand']) - 1} cards remaining")
+    time.sleep(UNIVERSAL_TIME_CONTROL)
+    topCard = cardsInplay[len(cardsInplay)-1]
+    print(f"top card: {topCard['colour']} {topCard['num']}")
+    time.sleep(UNIVERSAL_TIME_CONTROL)
+    player["hand"].remove(optimalCard)
+
+    return players, reverse, skip
+
+#kiest kleur wanneer zwarte kaarten gespeeld worden
+def blackPlayer(optimalCard : dict) -> dict:
+    colours = ["yellow", "red", "blue", "green"]
+    random.shuffle(colours)
+    optimalCard["colour"] = colours[0]
+    return optimalCard
+
+#zorgt dat +2 en +4 iets doen
+def plusPlayer(optimalCard : dict, players : list, turn : int, reverse : bool, player : dict) -> list:
+    extraExtraDraw = 0 #lol
+    if player["extraDraw"] > 0:
+        extraExtraDraw = player["extraDraw"]
+        player["extraDraw"] = 0
+    
+    nextPlayer = playerFinder(players, reverse, player)
+
+    if optimalCard["num"] == "+2":
+        players[nextPlayer["playerNr"]-1]["extraDraw"] = players[nextPlayer["playerNr"]-1]["extraDraw"] + 2 + extraExtraDraw
+    else:
+        players[nextPlayer["playerNr"]-1]["extraDraw"] = players[nextPlayer["playerNr"]-1]["extraDraw"] + 4 + extraExtraDraw
+    return players, player
+
+#vind speler
+def playerFinder(players : list, reverse : bool, player : dict) -> dict:
+    num = player["playerNr"]
+    if reverse == False:
+        nextPlayerNr = num + 1
+        if num + 1 == 5:
+            nextPlayerNr = 1
+    else:
+        nextPlayerNr = num - 1
+        if num - 1 == 0:
+            nextPlayerNr = 4
+
+    for x in players:
+        if x["playerNr"] == nextPlayerNr:
+            return x
 
 #lijst van kaarten in het spel
 #elke beurt 1 kaart genereren
