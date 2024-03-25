@@ -1,36 +1,79 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-
-class Program{
+﻿class Program{
     static void Main(string[] args){
-        Charmander charmander = new Charmander("charmander", "fire", "water");
-        int x = 0;
-        while(x == 0) {
-            charmander.SetName();
-            charmander.BattleCry();
-        }
+
+    }
+}
+
+class Pokeball{
+    public Charmander charmander;
+    public bool hasCharmander;
+    public bool isOpen;
+
+    public Pokeball(Charmander charmander, bool hasCharmander, bool isOpen) {
+        this.charmander = charmander;
+        this.hasCharmander = hasCharmander;
+        this.isOpen = isOpen;
+    }
+
+    public void Thrown() {
+        this.hasCharmander = false;
+    }
+
+    public void Returned() {
+        this.hasCharmander = true;
+    }
+
+    public void open() {
+        this.isOpen = true;
+    }
+
+    public void close() {
+        this.isOpen = false;
     }
 }
 
 class Charmander{
-    public String name;
+    public String nickname;
     public String strength;
     public String weakness;
 
-    public Charmander(string name, string strength, string weakness) {
-        this.name = name;
+    public Charmander(String nickname, String strength, String weakness) {
+        this.nickname = nickname;
         this.strength = strength;
         this.weakness = weakness;
     }
-    
-    public void SetName() {
-        Console.WriteLine("Set nickname for Charmander:");
-        this.name = Console.ReadLine();
-    }
 
     public void BattleCry() {
-        for(int i = 0; i < 10; i++) {
-            Console.WriteLine(this.name + "!");
-        }
+        Console.WriteLine("CHARMANDER!");
     }
-} 
+}
+
+class Trainer{
+    public List<Pokeball> belt;
+    public String name;
+
+    public Trainer(List<Pokeball> belt, String name) {
+        for(int i = 0; i < 5; i++) {
+            //???????????
+        }
+        this.name = name;
+    }
+
+    public void ThrowPokeball(Pokeball pokeball) {
+        pokeball.open();
+        pokeball.Thrown();
+    }
+
+    public void ReturnPokeball(Pokeball pokeball) {
+        pokeball.Returned();
+        pokeball.close();
+    }
+}
+
+class Game{
+    public void GenerateTrainer(int trainerNr) {
+        Console.WriteLine("Set name for traner: " + trainerNr);
+        String trainerName = Console.ReadLine();
+        Trainer trainer = new Trainer(iets , trainerName); //??????????
+    }
+}
