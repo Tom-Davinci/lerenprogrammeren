@@ -1,50 +1,93 @@
-﻿class Program{
+﻿class Program{ // "game"
     static void Main(string[] args){
+        Pokemon charmander = new Pokemon("Charmander", "Fire", "Water");
+        Pokeball Ball = new Pokeball(charmander, true);
 
+        List<Pokeball> belt = [];
+        for(int i = 0; i < 6; i++) {
+            belt.Add(Ball);
+        }
+
+        int beltLength = belt.Count();
+        if( beltLength > 6) {
+            Console.WriteLine("Something went wrong");
+        }
+
+        bool restart = true;
+        while(restart) {
+            Console.WriteLine("Give a name to the first trainer:");
+            String trainerName = Console.ReadLine();
+            Trainer trainer1 = new Trainer(belt, trainerName);
+
+            Console.WriteLine("Give a name to the second trainer:");
+            String trainer2Name = Console.ReadLine();
+            Trainer trainer2 = new Trainer(belt, trainer2Name);
+
+            for(int i = 0; i < 6; i++) {
+                trainer1.ThrowBall(i);
+                trainer1.belt[i].charmander.BattleCry();
+                trainer2.ThrowBall(i);
+                trainer2.belt[i].charmander.BattleCry();
+                trainer1.ReturnBall(i);
+                trainer2.ReturnBall(i);
+            }
+
+            while(true) {
+                Console.WriteLine("Go again? (Y/N)");
+                String yesno = Console.ReadLine();
+                if(yesno != "Y" && yesno != "N") {
+                    Console.WriteLine("Please enter Y/N");
+                }
+                else if(yesno == "Y") {
+                    break;
+                }
+                else if(yesno == "N") {
+                    restart = false;
+                    Console.WriteLine("Goodbye :)");
+                    break;
+                }
+            }
+        }
     }
 }
 
-class Pokeball{
-    public Charmander charmander;
-    public bool hasCharmander;
-    public bool isOpen;
-
-    public Pokeball(Charmander charmander, bool hasCharmander, bool isOpen) {
-        this.charmander = charmander;
-        this.hasCharmander = hasCharmander;
-        this.isOpen = isOpen;
-    }
-
-    public void Thrown() {
-        this.hasCharmander = false;
-    }
-
-    public void Returned() {
-        this.hasCharmander = true;
-    }
-
-    public void open() {
-        this.isOpen = true;
-    }
-
-    public void close() {
-        this.isOpen = false;
-    }
-}
-
-class Charmander{
-    public String nickname;
+class Pokemon {
+    public String name;
     public String strength;
     public String weakness;
 
-    public Charmander(String nickname, String strength, String weakness) {
-        this.nickname = nickname;
+    public Pokemon (string name, string strength, string weakness)
+    {
+        this.name = name;
         this.strength = strength;
         this.weakness = weakness;
     }
 
     public void BattleCry() {
-        Console.WriteLine("CHARMANDER!");
+        Console.WriteLine(this.name + "!!!");
+    }
+}
+
+class Pokeball{
+    public Pokemon charmander;
+
+    public bool open = false;
+    public bool containsPokemon;
+
+    public Pokeball(Pokemon charmander, bool containsPokemon)
+    {
+        this.charmander = charmander;
+        this.containsPokemon = containsPokemon;
+    }
+
+    public void Thrown() {
+        this.open = true;
+        this.containsPokemon = false;
+    }
+
+    public void Returned() {
+        this.containsPokemon = true;
+        this.open = false;
     }
 }
 
@@ -52,28 +95,17 @@ class Trainer{
     public List<Pokeball> belt;
     public String name;
 
-    public Trainer(List<Pokeball> belt, String name) {
-        for(int i = 0; i < 5; i++) {
-            //???????????
-        }
+    public Trainer (List<Pokeball> belt, string name)
+    {
+        this.belt = belt;
         this.name = name;
     }
 
-    public void ThrowPokeball(Pokeball pokeball) {
-        pokeball.open();
-        pokeball.Thrown();
+    public void ThrowBall(int beltIndex) {
+        belt[beltIndex].Thrown();
     }
 
-    public void ReturnPokeball(Pokeball pokeball) {
-        pokeball.Returned();
-        pokeball.close();
-    }
-}
-
-class Game{
-    public void GenerateTrainer(int trainerNr) {
-        Console.WriteLine("Set name for traner: " + trainerNr);
-        String trainerName = Console.ReadLine();
-        Trainer trainer = new Trainer(iets , trainerName); //??????????
+    public void ReturnBall(int beltIndex) {
+        belt[beltIndex].Returned();
     }
 }
