@@ -1,11 +1,17 @@
 ﻿class Program{ // "game"
     static void Main(string[] args){
-        Pokemon charmander = new Pokemon("Charmander", "Fire", "Water");
-        Pokeball Ball = new Pokeball(charmander, true);
+        Pokemon charmander = new Charmander("Charmander", "Fire", "Water");
+        Pokemon squirtle = new Squirtle("Squirtle", "Water", "Grass");
+        Pokemon bulbasaur = new Bulbasaur("Bulbasaur", "Grass", "Fire");
+        Pokeball Ball1 = new Pokeball(charmander, true);
+        Pokeball Ball2 = new Pokeball(squirtle, true);
+        Pokeball Ball3 = new Pokeball(bulbasaur, true);
 
         List<Pokeball> belt = [];
-        for(int i = 0; i < 6; i++) {
-            belt.Add(Ball);
+        for(int i = 0; i < 2; i++) {
+            belt.Add(Ball1);
+            belt.Add(Ball2);
+            belt.Add(Ball3);
         }
 
         int beltLength = belt.Count();
@@ -25,9 +31,9 @@
 
             for(int i = 0; i < 6; i++) {
                 trainer1.ThrowBall(i);
-                trainer1.belt[i].charmander.BattleCry();
+                trainer1.belt[i].pokemon.BattleCry();
                 trainer2.ThrowBall(i);
-                trainer2.belt[i].charmander.BattleCry();
+                trainer2.belt[i].pokemon.BattleCry();
                 trainer1.ReturnBall(i);
                 trainer2.ReturnBall(i);
             }
@@ -51,7 +57,7 @@
     }
 }
 
-class Pokemon {
+abstract class Pokemon {
     public String name;
     public String strength;
     public String weakness;
@@ -63,20 +69,45 @@ class Pokemon {
         this.weakness = weakness;
     }
 
-    public void BattleCry() {
-        Console.WriteLine(this.name + "!!!");
-    }
+    public abstract void BattleCry();
+}
+
+class Charmander : Pokemon {
+
+public Charmander( String name, String strength, String weakness) : base(name, strength, weakness) {}
+
+public override void BattleCry() {
+    Console.WriteLine(this.name + "!!!");
+}
+}
+
+class Squirtle : Pokemon {
+
+public Squirtle( String name, String strength, String weakness) : base(name, strength, weakness) {}
+
+public override void BattleCry() {
+    Console.WriteLine(this.name + "!!!");
+}
+}
+
+class Bulbasaur : Pokemon {
+
+public Bulbasaur( String name, String strength, String weakness) : base(name, strength, weakness) {}
+
+public override void BattleCry() {
+    Console.WriteLine(this.name + "!!!");
+}
 }
 
 class Pokeball{
-    public Pokemon charmander;
+    public Pokemon pokemon;
 
     public bool open = false;
     public bool containsPokemon;
 
-    public Pokeball(Pokemon charmander, bool containsPokemon)
+    public Pokeball(Pokemon pokemon, bool containsPokemon)
     {
-        this.charmander = charmander;
+        this.pokemon = pokemon;
         this.containsPokemon = containsPokemon;
     }
 
