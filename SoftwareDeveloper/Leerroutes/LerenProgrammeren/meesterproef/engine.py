@@ -1,7 +1,7 @@
 import random, time
 
 debug = False
-UNIVERSAL_TIME_CONTROL = 1
+UNIVERSAL_TIME_CONTROL = 0.1
 
 #genereert het deck van 108 kaarten
 def generateDeck() -> list:
@@ -192,18 +192,13 @@ def findOptimalCard(playableCards : list, player : dict) -> dict:
                 playableColours.append(len(colour))
         playableColours.sort(reverse=True)
 
-        if len(yellowCards) == playableColours[0]:
-            yellowCards.sort(key=lambda x: x['num'], reverse=True)
-            return yellowCards[0]
-        elif len(redCards) == playableColours[0]:
-            redCards.sort(key=lambda x: x['num'], reverse=True)
-            return redCards[0]
-        elif len(blueCards) == playableColours[0]:
-            blueCards.sort(key=lambda x: x['num'], reverse=True)
-            return blueCards[0]
-        elif len(greenCards) == playableColours[0]:
-            greenCards.sort(key=lambda x: x['num'], reverse=True)
-            return greenCards[0] 
+        for colour in colours:
+            if len(colour) == playableColours[0]:
+                return highCardSelector(colour)
+
+def highCardSelector(cards : list):
+    cards.sort(key=lambda x: x['num'], reverse=True)
+    return cards[0]
 
 #sorteert kaarten
 def cardSort(cards : list, type : str, sortBy : str) -> list:

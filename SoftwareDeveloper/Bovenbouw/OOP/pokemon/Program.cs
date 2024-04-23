@@ -1,10 +1,8 @@
-﻿using System.IO.Compression;
-
-class Program{ // "game"
+﻿class Program{ // "game"
     static void Main(string[] args){
-        Pokemon charmander = new Charmander("Charmander", "Fire", "Water");
-        Pokemon squirtle = new Squirtle("Squirtle", "Water", "Grass");
-        Pokemon bulbasaur = new Bulbasaur("Bulbasaur", "Grass", "Fire");
+        Pokemon charmander = new Charmander("Charmander", PokemonTypes.Fire, PokemonTypes.Water);
+        Pokemon squirtle = new Squirtle("Squirtle", PokemonTypes.Water, PokemonTypes.Grass);
+        Pokemon bulbasaur = new Bulbasaur("Bulbasaur", PokemonTypes.Grass, PokemonTypes.Fire);
         Pokeball Ball1 = new Pokeball(charmander, true);
         Pokeball Ball2 = new Pokeball(squirtle, true);
         Pokeball Ball3 = new Pokeball(bulbasaur, true);
@@ -17,11 +15,11 @@ class Program{ // "game"
         }
 
         Console.WriteLine("Give a name to the first trainer:");
-        String trainerName = Console.ReadLine();
+        string? trainerName = Console.ReadLine();
         Trainer trainer1 = new Trainer(belt, trainerName);
 
         Console.WriteLine("Give a name to the second trainer:");
-        String trainer2Name = Console.ReadLine();
+        string? trainer2Name = Console.ReadLine();
         Trainer trainer2 = new Trainer(belt, trainer2Name);
 
         Battle battle = new Battle(trainer1, trainer2);
@@ -29,7 +27,7 @@ class Program{ // "game"
 
 
         int beltLength = belt.Count();
-        if( beltLength > 6) {
+        if( beltLength > (int) BeltCheck.beltLen) {
             Console.WriteLine("Something went wrong");
         }
 
@@ -41,7 +39,7 @@ class Program{ // "game"
 
             while(true) {
                 Console.WriteLine("Go again? (Y/N)");
-                String yesno = Console.ReadLine();
+                string? yesno = Console.ReadLine();
                 if(yesno != "Y" && yesno != "N") {
                     Console.WriteLine("Please enter Y/N");
                 }
@@ -53,21 +51,34 @@ class Program{ // "game"
                     Console.WriteLine("Goodbye :)");
                     break;
                 }
-            }           
+            }
         }
     }
 }
 
-abstract class Pokemon {
-    public String name;
-    public String strength;
-    public String weakness;
+enum BeltCheck{
+    beltLen = 6
+}
 
-    public Pokemon (string name, string strength, string weakness)
+abstract class Pokemon {
+    private string name {get;set;}
+    private PokemonTypes strength {get;set;}
+    private PokemonTypes weakness {get;set;}
+
+    public Pokemon (string name, PokemonTypes strength, PokemonTypes weakness)
     {
-        this.name = name;
+        this.name = name; 
         this.strength = strength;
         this.weakness = weakness;
+    }
+    public PokemonTypes GetStrength() {
+        return this.strength;
+    }
+    public PokemonTypes GetWeakness() {
+        return this.weakness;
+    }
+    public string GetName() {
+        return this.name;
     }
 
     public abstract void BattleCry();
@@ -75,33 +86,39 @@ abstract class Pokemon {
 
 class Charmander : Pokemon {
 
-public Charmander( String name, String strength, String weakness) : base(name, strength, weakness) {}
+public Charmander( String name, PokemonTypes strength, PokemonTypes weakness) : base(name, strength, weakness) {}
 
 public override void BattleCry() {
-    Console.WriteLine(this.name + "!!!");
+    Console.WriteLine(this.GetName() + "!!!");
 }
 }
 
 class Squirtle : Pokemon {
 
-public Squirtle( String name, String strength, String weakness) : base(name, strength, weakness) {}
+public Squirtle( String name, PokemonTypes strength, PokemonTypes weakness) : base(name, strength, weakness) {}
 
 public override void BattleCry() {
-    Console.WriteLine(this.name + "!!!");
+    Console.WriteLine(this.GetName() + "!!!");
 }
 }
 
 class Bulbasaur : Pokemon {
 
-public Bulbasaur( String name, String strength, String weakness) : base(name, strength, weakness) {}
+public Bulbasaur( String name, PokemonTypes strength, PokemonTypes weakness) : base(name, strength, weakness) {}
 
 public override void BattleCry() {
-    Console.WriteLine(this.name + "!!!");
+    Console.WriteLine(this.GetName() + "!!!");
 }
+}
+
+enum PokemonTypes{
+    Fire,
+    Water,
+    Grass
 }
 
 class Pokeball{
-    public Pokemon pokemon;
+    public readonly Pokemon pokemon;
 
     public bool open = false;
     public bool containsPokemon;
@@ -125,9 +142,9 @@ class Pokeball{
 
 class Trainer{
     public List<Pokeball> belt;
-    public String name;
+    public string? name;
 
-    public Trainer (List<Pokeball> belt, string name)
+    public Trainer (List<Pokeball> belt, string? name)
     {
         this.belt = belt;
         this.name = name;
@@ -171,55 +188,55 @@ class Battle {
             trainer1.belt[pokemonOrder[currentMon]].pokemon.BattleCry();
             trainer2.belt[pokemonOrder1[currentMon1]].pokemon.BattleCry();
 
-            if( trainer1.belt[pokemonOrder[currentMon]].pokemon.strength == "Fire") { //het spijt me
-                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.weakness == "Fire") {
+            if( trainer1.belt[pokemonOrder[currentMon]].pokemon.GetStrength() == PokemonTypes.Fire) { //het spijt me
+                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetWeakness() == PokemonTypes.Fire) {
                     Console.WriteLine("Trainer 1 wins!");
                     currentMon1 += 1;
                     winner = true;
                     winner1 = false;
                 }
 
-                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.strength == "Water") {
+                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetStrength() == PokemonTypes.Water) {
                     Console.WriteLine("Trainer 2 wins!");
                     currentMon += 1;
                     winner1 = true;
                     winner = false;                    
                 }
 
-                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.strength == "Fire") {
+                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetStrength() == PokemonTypes.Fire) {
                     Console.WriteLine("Draw!");
                     draw = true;
                 }
             }
-            else if( trainer1.belt[pokemonOrder[currentMon]].pokemon.strength == "Water") {
-                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.weakness == "Water") {
+            else if( trainer1.belt[pokemonOrder[currentMon]].pokemon.GetStrength() == PokemonTypes.Water) {
+                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetWeakness() == PokemonTypes.Water) {
                     Console.WriteLine("Trainer 1 wins!");
                     currentMon1 += 1;
                     winner = true;
                     winner1 = false;                    
                 }
 
-                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.strength == "Grass") {
+                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetStrength() == PokemonTypes.Grass) {
                     Console.WriteLine("Trainer 2 wins!");
                     currentMon += 1;
                     winner1 = true;
                     winner = false;   
                 }
 
-                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.strength == "Water") {
+                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetStrength() == PokemonTypes.Water) {
                     Console.WriteLine("Draw!");
                     draw = true;
                 }
             }
-            else if( trainer1.belt[pokemonOrder[currentMon]].pokemon.strength == "Grass") {
-                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.weakness == "Grass") {
+            else if( trainer1.belt[pokemonOrder[currentMon]].pokemon.GetStrength() == PokemonTypes.Grass) {
+                if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetWeakness() == PokemonTypes.Grass) {
                     Console.WriteLine("Trainer 1 wins!");
                     currentMon1 += 1;
                     winner = true;
                     winner1 = false;                    
                 }
 
-                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.strength == "Fire") {
+                else if( trainer2.belt[pokemonOrder1[currentMon1]].pokemon.GetStrength() == PokemonTypes.Fire) {
                     Console.WriteLine("Trainer 2 wins!");
                     currentMon += 1;
                     winner1 = true;
