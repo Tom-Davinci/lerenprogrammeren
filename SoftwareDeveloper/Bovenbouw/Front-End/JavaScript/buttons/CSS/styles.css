@@ -1,0 +1,21 @@
+.bgc {
+    background-color: gray;
+}
+
+#container {
+    width: 50%;
+    height: 200px;
+    margin-left: 25%;
+    margin-right: 25%;
+    background-color: white;
+}
+
+button {
+    padding: 2%;
+    margin-top: 10%;
+    margin-left: 10%;
+    padding-left: 50px;
+    padding-right: 50px;
+    float: left;
+    color: white;
+}
